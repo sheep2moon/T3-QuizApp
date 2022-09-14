@@ -6,12 +6,13 @@ import { trpc } from "../../utils/trpc";
 import Button from "../common/Button";
 import InputFile from "../common/InputFile";
 import InputText from "../common/InputText";
+import TextArea from "../common/TextArea";
 import NewQuestion from "./components/NewQuestion";
 import StepContainer from "./components/StepContainer";
 
 const NewQuizForm = () => {
     const [step, setStep] = useState(1);
-    const [quizData, setQuizData] = useState({ title: "", image: "", categoryId: "" });
+    const [quizData, setQuizData] = useState({ title: "", image: "", categoryId: "", description: "" });
     const [searchQuery, setSearchQuery] = useState("");
     const [file, setFile] = useState<any>(null);
     const categories = trpc.useQuery(["quizzes.getCategories"]);
@@ -23,7 +24,7 @@ const NewQuizForm = () => {
     }, [categories, searchQuery]);
 
     const prevStep = () => setStep(prev => Math.max(0, prev - 1));
-    const nextStep = () => setStep(prev => Math.min(3, prev + 1));
+    const nextStep = () => setStep(prev => Math.min(2, prev + 1));
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -70,28 +71,13 @@ const NewQuizForm = () => {
                         <InputFile file={file} setFile={setFile} />
                     </div>
                     <InputText label="Nazwa quizu" name="title" placeholder="Dla fanów ŚWK" value={quizData.title} onChange={handleInputChange} />
+                    <TextArea label="Opis quizu" value={quizData.description} setValue={(v: string) => setQuizData(prev => ({ ...prev, description: v }))} placeholder="Opis..." />
                     <div className="flex">
                         <Button variant="secondary" onClick={prevStep}>
                             Wstecz
                         </Button>
                         <Button variant="primary" onClick={nextStep}>
                             Dalej
-                        </Button>
-                    </div>
-                </div>
-            );
-
-        case 3:
-            return (
-                <div className="w-full flex flex-col  gap-2">
-                    <span className="text-center font-bold bg-secondary rounded-md text-primary py-2 mb-4">Pytania</span>
-                    <NewQuestion />
-                    <div className="flex">
-                        <Button variant="secondary" onClick={prevStep}>
-                            Wstecz
-                        </Button>
-                        <Button variant="primary" onClick={nextStep}>
-                            Stwórz
                         </Button>
                     </div>
                 </div>
