@@ -1,0 +1,113 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+    provider             = "mysql"
+    url                  = env("DATABASE_URL")
+    referentialIntegrity = "prisma"
+}
+
+model Image {
+    id       String     @id @default(cuid())
+    url      String?
+    Category Category[]
+    Quiz     Quiz[]
+    Question Question[]
+}
+
+model Question {
+    id            String @id @default(cuid())
+    quizId        String
+    title         String
+    answerA       String
+    answerB       String
+    answerC       String
+    answerD       String
+    correctAnswer String
+    quiz          Quiz   @relation(fields: [quizId], references: [id])
+    imageId       String
+    image         Image  @relation(fields: [imageId], references: [id])
+}
+
+model Comment {
+    id     String  @id @default(cuid())
+    text   String  @db.Text
+    author String?
+    quizId String
+    quiz   Quiz    @relation(fields: [quizId], references: [id])
+}
+
+model Category {
+    id      String @id @default(cuid())
+    name    String
+    imageId String
+    image   Image  @relation(fields: [imageId], references: [id])
+    quizzes Quiz[]
+}
+
+model Quiz {
+    id          String     @id @default(cuid())
+    title       String
+    description String     @db.Text
+    rating      Int?
+    comments    Comment[]
+    questions   Question[]
+    createdBy   String?
+    created     DateTime   @default(now())
+    imageId     String
+    image       Image      @relation(fields: [imageId], references: [id])
+    categoryId  String
+    category    Category   @relation(fields: [categoryId], references: [id])
+    userId      String
+    User        User       @relation(fields: [userId], references: [id])
+}
+
+model Account {
+    id                String  @id @default(cuid())
+    userId            String
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String? @db.Text
+    access_token      String? @db.Text
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String? @db.Text
+    session_state     String?
+    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([provider, providerAccountId])
+}
+
+model Session {
+    id           String   @id @default(cuid())
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    image         String?   @db.Text
+    accounts      Account[]
+    sessions      Session[]
+    quizzes       Quiz[]
+}
+
+model VerificationToken {
+    identifier String
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
+}
