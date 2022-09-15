@@ -1,7 +1,9 @@
 import { signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
+import Hamburger from "./components/Hamburger";
+import MobileMenu from "./components/MobileMenu";
 
 type NavProps = {
     name: string | undefined | null;
@@ -16,13 +18,16 @@ type navLink = {
 
 const navLinks: navLink[] = [
     { title: "Kategorie", href: "/browse-categories" },
+    { title: "Konto", href: "/account" },
     { title: "Stwórz quiz", href: "/create-quiz" },
     { title: "Stwórz kategorie", href: "/create-category" }
 ];
 
 const Nav = ({ name, image, status }: NavProps) => {
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const closeMobile = () => setMobileOpen(false);
     return (
-        <header className="h-16 shadow-sm shadow-slate-50/20 flex justify-between items-center px-4">
+        <header className="fixed top-0 inset-x-0 h-16 shadow-sm bg-primary text-light shadow-slate-50/20 z-50 flex justify-between items-center px-4">
             <div className="gap-2 hidden small:flex">
                 {navLinks.map(link => (
                     <Link href={link.href} key={link.title}>
@@ -30,6 +35,10 @@ const Nav = ({ name, image, status }: NavProps) => {
                     </Link>
                 ))}
             </div>
+            <button onClick={() => setMobileOpen(o => !o)}>
+                <Hamburger isOpen={mobileOpen} />
+            </button>
+            <MobileMenu navLinks={navLinks} isOpen={mobileOpen} close={closeMobile} />
             {status === "loading" && <div>Loading...</div>}
             {status === "authenticated" && (
                 <div className="flex items-center gap-2">

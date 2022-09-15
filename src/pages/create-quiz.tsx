@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import Container from "../modules/common/Container";
 import NewQuizForm from "../modules/NewQuizForm";
 
 const CreateQuiz = () => {
     return (
-        <div className="w-full max-w-lg">
+        <Container>
             <NewQuizForm />
-        </div>
+        </Container>
     );
 };
 

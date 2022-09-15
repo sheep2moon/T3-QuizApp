@@ -4,5 +4,5 @@
 
 
 body{
-    @apply bg-primary text-light
+    @apply bg-gradient-to-br from-primary to-indigo-900 text-light
 }

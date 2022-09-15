@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import Button from "../modules/common/Button";
+import Container from "../modules/common/Container";
 import InputFile from "../modules/common/InputFile";
 import InputText from "../modules/common/InputText";
 import { trpc } from "../utils/trpc";
@@ -43,13 +44,19 @@ const CreateCategory = () => {
     };
 
     return (
-        <div className="flex flex-col gap-4">
-            <InputText name="name" label="Nazwa kategorii" value={categoryName} onChange={handleCategoryNameChange} />
-            <InputFile file={file} setFile={setFile} />
-            <Button disabled={isLoading} variant="primary" onClick={handleFileUpload}>
-                {isLoading ? "Czekaj..." : "Stwórz"}
-            </Button>
-        </div>
+        <Container>
+            <div className="flex flex-col gap-4 h-full mt-2">
+                <InputFile file={file} setFile={setFile} />
+                <InputText name="name" label="Nazwa kategorii" value={categoryName} onChange={handleCategoryNameChange} />
+                <p className="mt-auto bg-light/5 p-4 rounded-lg">
+                    <div className="font-bold">Uwaga!</div>
+                    Zanim nowa kategoria zostanie dodana, zostanie ona zweryfikowana przez jednego z moderatorów.
+                </p>
+                <Button disabled={isLoading} variant="primary" onClick={handleFileUpload}>
+                    {isLoading ? "Czekaj..." : "Stwórz"}
+                </Button>
+            </div>
+        </Container>
     );
 };
 
