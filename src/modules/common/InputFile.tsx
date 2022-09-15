@@ -20,7 +20,7 @@ const InputFile = ({ file, setFile }: InputFileProps) => {
                     <Image src={URL.createObjectURL(file)} alt="podgląd" layout="fill" />
                 </div>
             ) : (
-                <span className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">Kliknij aby wybrać zdjęcie</span>
+                <span className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">Kliknij aby wybrać zdjęcie</span>
             )}
         </div>
     );

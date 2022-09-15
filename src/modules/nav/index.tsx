@@ -35,7 +35,7 @@ const Nav = ({ name, image, status }: NavProps) => {
                     </Link>
                 ))}
             </div>
-            <button onClick={() => setMobileOpen(o => !o)}>
+            <button className="small:hidden" onClick={() => setMobileOpen(o => !o)}>
                 <Hamburger isOpen={mobileOpen} />
             </button>
             <MobileMenu navLinks={navLinks} isOpen={mobileOpen} close={closeMobile} />
@@ -48,7 +48,10 @@ const Nav = ({ name, image, status }: NavProps) => {
                             Sign out
                         </button>
                     </div>
-                    <Image src={image ?? ""} alt="awatar" width="40px" height="40px" className="rounded-lg" />
+                    <div className=" relative w-10 h-10">
+                        <div className="absolute inset-0 ring-1 ring-secondary  rounded-md" />
+                        <Image src={image ?? ""} alt="awatar" layout="fill" className="rounded-lg " />
+                    </div>
                 </div>
             )}
             {status === "unauthenticated" && (

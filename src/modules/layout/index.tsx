@@ -17,7 +17,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             </Head>
 
             <Nav status={session.status} name={session.data?.user?.name} image={session.data?.user?.image} />
-            <main className="container overflow-y-scroll overflow-x-hidden mx-auto  flex flex-col items-center justify-center p-1 small:p-4 h-screen">{children}</main>
+            <main className="container  mx-auto  flex flex-col items-center justify-center p-1 small:p-4 min-h-screen">{children}</main>
         </>
     );
 };

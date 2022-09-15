@@ -12,10 +12,11 @@ import StepContainer from "./components/StepContainer";
 
 const NewQuizForm = () => {
     const [step, setStep] = useState(1);
-    const [quizData, setQuizData] = useState({ title: "", image: "", categoryId: "", description: "" });
+    const [quizData, setQuizData] = useState({ title: "", imageId: "", categoryId: "", description: "" });
     const [searchQuery, setSearchQuery] = useState("");
     const [file, setFile] = useState<any>(null);
     const categories = trpc.useQuery(["quizzes.getCategories"]);
+    const { mutateAsync: createQuiz } = trpc.useMutation(["protected.createQuiz"]);
 
     const filteredCategories = useMemo(() => {
         if (categories.data) {
@@ -39,15 +40,17 @@ const NewQuizForm = () => {
         setQuizData(prev => ({ ...prev, categoryId }));
     };
 
-    const handleCreateQuiz = () => {
+    const handleCreateQuiz = async () => {
         //TOODOO
+        const { title, categoryId, description, imageId } = quizData;
+        const quiz = createQuiz({ title, categoryId, description, imageId });
     };
 
     switch (step) {
         case 1:
             return (
                 <div className="flex flex-col gap-2 w-full h-full">
-                    <span className="text-center font-bold bg-secondary rounded-md text-primary py-2 mb-4">Wybierz kategorie</span>
+                    <span className="text-center font-bold bg-secondary rounded-md text-primary py-2 my-1">Wybierz kategorie</span>
                     <InputText placeholder="Szukaj..." value={searchQuery} onChange={handleSearchChange} />
                     <div className="grid grid-cols-2 grid-rows-4 gap-1 h-full border p-1 border-light/10 rounded-md w-full">
                         {categories.isSuccess &&
@@ -69,8 +72,8 @@ const NewQuizForm = () => {
         case 2:
             return (
                 <div className="w-full flex flex-col gap-2 h-full">
-                    <span className="text-center font-bold bg-secondary rounded-md text-primary py-2 mb-4">Podstawowe informacje</span>
-                    <div className="flex w-full max-w-sm mx-auto">
+                    <span className="text-center font-bold bg-secondary rounded-md text-primary py-2 my-1">Podstawowe informacje</span>
+                    <div className="flex w-full max-w-[260px] mx-auto">
                         <InputFile file={file} setFile={setFile} />
                     </div>
                     <InputText label="Nazwa quizu" name="title" placeholder="Dla fanów ŚWK" value={quizData.title} onChange={handleInputChange} />
