@@ -10,7 +10,11 @@ export type ButtonProps = {
 
 const Button = ({ onClick, variant = "primary", disabled, children }: ButtonProps) => {
     return (
-        <button disabled={disabled} className={clsx("p-2 w-full", { "bg-secondary text-primary font-semibold": variant === "primary" }, { "bg-none border border-secondary text-secondary": variant === "secondary" })} onClick={onClick}>
+        <button
+            disabled={disabled}
+            className={clsx("p-2 w-full rounded-md", { "bg-secondary text-primary font-semibold": variant === "primary" }, { "bg-none border border-secondary text-secondary": variant === "secondary" })}
+            onClick={onClick}
+        >
             {disabled ? "Loading..." : children}
         </button>
     );

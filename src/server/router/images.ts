@@ -1,4 +1,5 @@
 import { S3 } from "aws-sdk";
+import { PresignedPost } from "aws-sdk/clients/s3.js";
 import { z } from "zod";
 import { env } from "../../env/server.mjs";
 import { createProtectedRouter } from "./context";
@@ -17,7 +18,7 @@ export const imagesRouter = createProtectedRouter()
       const image = await ctx.prisma.image.create({data:{}})
       console.log("live");
       
-      return new Promise((resolve,reject) => {
+      const s3Data: PresignedPost = await new Promise((resolve,reject) => {
         s3.createPresignedPost({
           Fields: {
             key: `categories/${image.id}`
@@ -32,7 +33,8 @@ export const imagesRouter = createProtectedRouter()
           if(err) return reject(err)
           resolve(signed)
         })
-      })      
+      }) 
+      return {url: s3Data.url,fields: s3Data.fields,imageId: image.id}     
     },
   })
   

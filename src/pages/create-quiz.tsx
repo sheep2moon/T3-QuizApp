@@ -5,7 +5,9 @@ import NewQuizForm from "../modules/NewQuizForm";
 const CreateQuiz = () => {
     return (
         <Container>
-            <NewQuizForm />
+            <div className="w-full max-w-lg flex-1">
+                <NewQuizForm />
+            </div>
         </Container>
     );
 };

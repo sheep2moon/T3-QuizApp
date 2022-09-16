@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React, { useEffect } from "react";
 import Container from "../modules/common/Container";
-import { getCategoryImageUrl } from "../utils/getImageUrl";
+import { getImageUrl } from "../utils/getImageUrl";
 import { trpc } from "../utils/trpc";
 
 const BrowseCategories = () => {
@@ -19,7 +19,7 @@ const BrowseCategories = () => {
                     categories.data.map(category => (
                         <div key={category.id} className="flex flex-col items-center bg-light/10 rounded-md p-4 justify-between">
                             <span className="text-light text-center text- font-semibold text-sm small:text-lg mb-1">{category.name}</span>
-                            <Image src={getCategoryImageUrl(category.imageId)} width="200px" height="200px" alt="kategoria" className="rounded-b-md" />
+                            <Image src={getImageUrl(category.imageId)} width="200px" height="200px" alt="kategoria" className="rounded-b-md" />
                         </div>
                     ))}
             </div>

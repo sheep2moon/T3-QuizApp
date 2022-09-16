@@ -1,39 +1,27 @@
-import Image from "next/image";
 import React, { useState } from "react";
 import Button from "../modules/common/Button";
 import Container from "../modules/common/Container";
 import InputFile from "../modules/common/InputFile";
 import InputText from "../modules/common/InputText";
+import { uploadFile } from "../server/common/uploadFile";
 import { trpc } from "../utils/trpc";
 
 const CreateCategory = () => {
     const [file, setFile] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const { mutateAsync: createPresignedUrl } = trpc.useMutation(["images.createPresignedUrl"]);
     const { mutateAsync: createCategory } = trpc.useMutation(["protected.createCategory"]);
+    const { mutateAsync: createPresignedUrl } = trpc.useMutation(["images.createPresignedUrl"]);
 
     const [categoryName, setCategoryName] = useState("");
 
     const handleFileUpload = async () => {
         setIsLoading(true);
         if (!file) return;
-        const { url, fields } = (await createPresignedUrl()) as any;
-        const data = {
-            ...fields,
-            "Content-Type": file.type,
-            file
-        };
+        const { url, fields, imageId } = (await createPresignedUrl()) as any;
         console.log(url, fields);
-        const formData = new FormData();
-        for (const name in data) {
-            formData.append(name, data[name]);
-        }
-        await fetch(url, {
-            method: "POST",
-            body: formData
-        });
 
-        await createCategory({ name: categoryName, imageId: fields.key.split("/")[1] });
+        await uploadFile({ file, url, fields });
+        await createCategory({ name: categoryName, imageId });
         setIsLoading(false);
         setFile(null);
         setCategoryName("");
@@ -45,7 +33,7 @@ const CreateCategory = () => {
 
     return (
         <Container>
-            <div className="flex flex-col gap-4 h-full mt-2">
+            <div className="flex flex-col gap-4 h-full mt-2 max-w-lg mx-auto">
                 <InputFile file={file} setFile={setFile} />
                 <InputText name="name" label="Nazwa kategorii" value={categoryName} onChange={handleCategoryNameChange} />
                 <p className="mt-auto bg-light/5 p-4 rounded-lg">

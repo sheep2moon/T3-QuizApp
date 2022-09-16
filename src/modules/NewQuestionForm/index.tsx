@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import Button from "../../common/Button";
-import Checkbox from "../../common/Checkbox";
-import InputFile from "../../common/InputFile";
-import InputText from "../../common/InputText";
 import { BsArrow90DegDown } from "react-icons/bs";
+import Button from "../common/Button";
+import Checkbox from "../common/Checkbox";
+import InputFile from "../common/InputFile";
+import InputText from "../common/InputText";
 
 const question = {
     title: "",
@@ -14,7 +14,7 @@ const question = {
     correctAnswer: ""
 };
 
-const NewQuestion = () => {
+const NewQuestionForm = () => {
     const [newQuestion, setNewQuestion] = useState(question);
     const [file, setFile] = useState<any>(null);
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +27,7 @@ const NewQuestion = () => {
     };
 
     return (
-        <div className="p-1 mb-4 flex flex-col gap-1">
+        <div className="p-1 mb-4 flex flex-col gap-1 w-full">
             <div className="mx-auto w-full max-w-xs">
                 <InputFile file={file} setFile={setFile} />
             </div>
@@ -53,4 +53,4 @@ const NewQuestion = () => {
     );
 };
 
-export default NewQuestion;
+export default NewQuestionForm;

@@ -5,7 +5,7 @@ type ContainerProps = {
 };
 
 const Container = ({ children }: ContainerProps) => {
-    return <div className="flex flex-col h-full mt-16 w-full mb-2">{children}</div>;
+    return <div className="flex flex-col items-center h-full mt-16 w-full mb-2">{children}</div>;
 };
 
 export default Container;

@@ -20,7 +20,9 @@ const navLinks: navLink[] = [
     { title: "Kategorie", href: "/browse-categories" },
     { title: "Konto", href: "/account" },
     { title: "Stwórz quiz", href: "/create-quiz" },
-    { title: "Stwórz kategorie", href: "/create-category" }
+    { title: "Stwórz kategorie", href: "/create-category" },
+    { title: "Quizy", href: "/quizzes" },
+    { title: "Moje quizy", href: "/my-quizzes" }
 ];
 
 const Nav = ({ name, image, status }: NavProps) => {

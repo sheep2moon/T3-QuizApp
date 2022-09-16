@@ -1,3 +1,4 @@
+import { prisma } from './../db/client';
 import { z } from "zod";
 import { createProtectedRouter } from "./context";
 
@@ -11,12 +12,13 @@ export const protectedRouter = createProtectedRouter()
       categoryId: z.string()
     }),
     async resolve({ input, ctx }) {
-      
+
       const res = ctx.prisma.quiz.create({
         data: {
           title: input.title,
           imageId: input.imageId,
           categoryId: input.categoryId,
+          description: input.description,
           userId: ctx.session.user.id
         }
       })
@@ -24,20 +26,22 @@ export const protectedRouter = createProtectedRouter()
       return res
     },
   })
-  .mutation("createCategory",{
+  .mutation("createCategory", {
     input: z.object({
       name: z.string(),
       imageId: z.string()
     }),
-    async resolve({input,ctx}){
-      const res = await ctx.prisma.category.create({data:{
-        name: input.name,
-        imageId: input.imageId 
-      }})
+    async resolve({ input, ctx }) {
+      const res = await ctx.prisma.category.create({
+        data: {
+          name: input.name,
+          imageId: input.imageId
+        }
+      })
       return res
     }
   })
-  .mutation("createQuestion",{
+  .mutation("createQuestion", {
     input: z.object({
       title: z.string(),
       quizId: z.string(),
@@ -48,7 +52,7 @@ export const protectedRouter = createProtectedRouter()
       correctAnswer: z.string(),
       imageId: z.string(),
     }),
-    async resolve({input,ctx}){
+    async resolve({ input, ctx }) {
       const res = await ctx.prisma.question.create({
         data: {
           quizId: input.quizId,
@@ -64,4 +68,11 @@ export const protectedRouter = createProtectedRouter()
       return res
     }
   })
-  
+  .query("getUserQuizzes",{
+    async resolve({ctx}){
+      const res = await ctx.prisma.quiz.findMany({where: {
+        userId: ctx.session.user.id
+      }})
+      return res
+    }
+  })
