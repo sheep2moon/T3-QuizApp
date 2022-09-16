@@ -68,6 +68,57 @@ export const protectedRouter = createProtectedRouter()
       return res
     }
   })
+  .mutation("addQuestion",{
+    input: z.object({
+      quizId: z.string(),
+      title: z.string(),
+      answerA: z.string(),
+      answerB: z.string(),
+      answerC: z.string(),
+      answerD: z.string(),
+      correctAnswer: z.string(),
+      imageId: z.string()
+
+    }),
+    async resolve({input,ctx}){
+      const res = await ctx.prisma.question.create({data: {
+        ...input      
+      }})
+      return res
+    }
+  })
+  .mutation("editQuestion",{
+    input: z.object({
+      questionId: z.string(),
+      title: z.string(),
+      answerA: z.string(),
+      answerB: z.string(),
+      answerC: z.string(),
+      answerD: z.string(),
+      correctAnswer: z.string(),
+      imageId: z.string()
+
+    }),
+    async resolve({input,ctx}){
+      await ctx.prisma.question.update({where:{id: input.questionId},data:{
+        title: input.title,
+        answerA: input.answerA,
+        answerB: input.answerB,
+        answerC: input.answerC,
+        answerD: input.answerD,
+        correctAnswer: input.correctAnswer,
+        imageId: input.imageId,
+      }})
+    }
+  })
+  .mutation("deleteQuestion",{
+    input: z.object({
+      questionId: z.string(),
+    }),
+    async resolve({input,ctx}){
+      await ctx.prisma.question.delete({where: {id: input.questionId}})
+    }
+  })
   .query("getUserQuizzes",{
     async resolve({ctx}){
       const res = await ctx.prisma.quiz.findMany({where: {

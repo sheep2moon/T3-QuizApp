@@ -14,7 +14,7 @@ const CreateCategory = () => {
 
     const [categoryName, setCategoryName] = useState("");
 
-    const handleFileUpload = async () => {
+    const handleCreateCategory = async () => {
         setIsLoading(true);
         if (!file) return;
         const { url, fields, imageId } = (await createPresignedUrl()) as any;
@@ -40,7 +40,7 @@ const CreateCategory = () => {
                     <div className="font-bold">Uwaga!</div>
                     Zanim nowa kategoria zostanie dodana, zostanie ona zweryfikowana przez jednego z moderatorów.
                 </p>
-                <Button disabled={isLoading} variant="primary" onClick={handleFileUpload}>
+                <Button disabled={isLoading} variant="primary" onClick={handleCreateCategory}>
                     {isLoading ? "Czekaj..." : "Stwórz"}
                 </Button>
             </div>
