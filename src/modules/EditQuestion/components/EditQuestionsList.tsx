@@ -16,10 +16,6 @@ const EditQuestionsList = ({ questions, refetch }: EditQuestionsListProps) => {
         refetch();
     };
 
-    useEffect(() => {
-        console.log(deleteMutation);
-    }, [deleteMutation]);
-
     return (
         <div>
             {questions.map(question => (

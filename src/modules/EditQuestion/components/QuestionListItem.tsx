@@ -14,14 +14,14 @@ type QuestionItemProps = {
 
 const QuestionListItem = ({ question, deleteQuestion, isLoading }: QuestionItemProps) => {
     return (
-        <div className="flex flex-col m-2 p-2 bg-light/10 rounded-sm h-44 justify-between">
+        <div className="flex flex-col m-2 bg-light/10 rounded-lg h-48 justify-between p-2">
             {isLoading ? (
                 <div className="mx-auto my-auto">
                     <LoadingSpinner />
                 </div>
             ) : (
                 <>
-                    <div className="flex items-center ">
+                    <div className="flex items-center p-2">
                         <div className="relative w-12 h-12 mr-4">
                             <Image src={getImageUrl(question.imageId)} className="rounded-md" alt="do pytania" layout="fill" />
                         </div>
@@ -33,7 +33,7 @@ const QuestionListItem = ({ question, deleteQuestion, isLoading }: QuestionItemP
                             </Button>
                         </div>
                     </div>
-                    <span>{question.title}</span>
+                    <span className="bg-primary/20 p-1">{question.title}</span>
                     <div className="grid grid-cols-2">
                         {["A", "B", "C", "D"].map(option => {
                             type ObjectKey = keyof typeof question;

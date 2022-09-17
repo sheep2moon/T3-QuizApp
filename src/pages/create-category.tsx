@@ -16,11 +16,15 @@ const CreateCategory = () => {
 
     const handleCreateCategory = async () => {
         setIsLoading(true);
-        if (!file) return;
-        const { url, fields, imageId } = (await createPresignedUrl()) as any;
-        console.log(url, fields);
+        let imageId = "";
+        if (file) {
+            const imgData = (await createPresignedUrl()) as any;
+            imageId = imgData.imageId;
+            await uploadFile({ file, url: imgData.url, fields: imgData.fields });
+        } else {
+            imageId = "default";
+        }
 
-        await uploadFile({ file, url, fields });
         await createCategory({ name: categoryName, imageId });
         setIsLoading(false);
         setFile(null);

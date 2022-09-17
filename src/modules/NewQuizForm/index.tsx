@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { useRouter } from "next/router";
 import React, { useMemo, useState } from "react";
 import { uploadFile } from "../../server/common/uploadFile";
 import { trpc } from "../../utils/trpc";
@@ -14,6 +15,7 @@ const NewQuizForm = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [file, setFile] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
 
     const categories = trpc.useQuery(["quizzes.getCategories"]);
     const { mutateAsync: createQuiz } = trpc.useMutation(["protected.createQuiz"]);
@@ -43,17 +45,22 @@ const NewQuizForm = () => {
 
     const handleCreateQuiz = async () => {
         setIsLoading(true);
-        const { url, fields, imageId } = (await createPresignedUrl()) as any;
-        console.log(url, fields);
 
-        await uploadFile({ url, fields, file });
+        let imageId = "";
+        if (file) {
+            const imgData = (await createPresignedUrl()) as any;
+            imageId = imgData.imageId;
+            await uploadFile({ url: imgData.url, fields: imgData.fields, file });
+        } else {
+            imageId = "default";
+        }
+
         const { title, categoryId, description } = quizData;
-        console.log(description);
-
         const quiz = await createQuiz({ title, categoryId, description, imageId });
         setIsLoading(false);
         setQuizData({ title: "", imageId: "", categoryId: "", description: "" });
         setFile(null);
+        router.push(`/edit-quiz/${quiz.id}`);
         console.log(quiz);
     };
 
