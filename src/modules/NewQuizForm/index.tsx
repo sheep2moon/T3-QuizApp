@@ -8,6 +8,7 @@ import InputFile from "../common/InputFile";
 import InputText from "../common/InputText";
 import LoadingSpinner from "../common/LoadingSpinner";
 import TextArea from "../common/TextArea";
+import CategorySkeleton from "../skeletons/CategorySkeleton";
 
 const NewQuizForm = () => {
     const [step, setStep] = useState(1);
@@ -71,12 +72,16 @@ const NewQuizForm = () => {
                     <span className="text-center font-bold bg-secondary rounded-md text-primary py-2 my-1">Wybierz kategorie</span>
                     <InputText placeholder="Szukaj..." value={searchQuery} onChange={handleSearchChange} />
                     <div className="h-80 overflow-y-scroll scroll  border p-1 border-light/10 rounded-md w-full">
-                        {categories.isLoading && (
+                        {/* {categories.isLoading && (
                             <div className="h-full w-full flex items-center justify-center">
                                 <LoadingSpinner />
                             </div>
-                        )}
+                        )} */}
                         <div className="grid grid-cols-2 grid-rows-4 gap-1">
+                            {categories.isLoading &&
+                                Array(8)
+                                    .fill(0)
+                                    .map((_, index) => <CategorySkeleton key={`skeleton${index}`} />)}
                             {categories.isSuccess &&
                                 filteredCategories.map(category => (
                                     <div

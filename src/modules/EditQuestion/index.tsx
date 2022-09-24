@@ -76,7 +76,7 @@ const EditQuizQuestions = ({ quizId }: EditQuestionsProps) => {
             await addQuestion({ ...currentQuestionData, imageId, quizId });
             setCurrentQuestionData(questionInitData);
             setFile(null);
-            quizData.refetch();
+            await quizData.refetch();
             setIsLoading(false);
         }
     };

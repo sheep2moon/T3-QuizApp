@@ -18,7 +18,7 @@ type navLink = {
 
 const navLinks: navLink[] = [
     { title: "Kategorie", href: "/browse-categories" },
-    { title: "Konto", href: "/account" },
+    { title: "Konto", href: "/" },
     { title: "Stwórz quiz", href: "/create-quiz" },
     { title: "Stwórz kategorie", href: "/create-category" },
     { title: "Quizy", href: "/quizzes" },
@@ -30,6 +30,14 @@ const Nav = ({ name, image, status }: NavProps) => {
     const closeMobile = () => setMobileOpen(false);
     return (
         <header className="fixed top-0 inset-x-0 h-16 shadow-sm bg-primary text-light shadow-slate-50/20 z-50 flex justify-between items-center px-4">
+            <button className="small:hidden" onClick={() => setMobileOpen(o => !o)}>
+                <Hamburger isOpen={mobileOpen} />
+            </button>
+            <div className="flex">
+                <Link href="/">
+                    <a>LOGO</a>
+                </Link>
+            </div>
             <div className="gap-2 hidden small:flex">
                 {navLinks.map(link => (
                     <Link href={link.href} key={link.title}>
@@ -37,9 +45,6 @@ const Nav = ({ name, image, status }: NavProps) => {
                     </Link>
                 ))}
             </div>
-            <button className="small:hidden" onClick={() => setMobileOpen(o => !o)}>
-                <Hamburger isOpen={mobileOpen} />
-            </button>
             <MobileMenu navLinks={navLinks} isOpen={mobileOpen} close={closeMobile} />
             {status === "loading" && <div>Loading...</div>}
             {status === "authenticated" && (

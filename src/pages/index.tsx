@@ -7,7 +7,7 @@ import { trpc } from "../utils/trpc";
 const Home: NextPage = () => {
     // const hello = trpc.useQuery(["example.hello", { text: "from tRPC" }]);
 
-    return <h1>index</h1>;
+    return <h1>Twórz i rozwiązuj quizy</h1>;
 };
 
 export default Home;

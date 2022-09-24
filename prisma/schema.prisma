@@ -12,6 +12,10 @@ datasource db {
     referentialIntegrity = "prisma"
 }
 
+// model DeleteAll {
+//     id String @id @default(cuid())
+// }
+
 model Image {
     id       String     @id @default(cuid())
     url      String?
